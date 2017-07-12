@@ -1,0 +1,25 @@
+{
+  "name": "hapi-js",
+  "version": "1.0.0",
+  "description": "Hapi.js App",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tony-Thomas/hapi-js-app.git"
+  },
+  "author": "Tony Thomas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tony-Thomas/hapi-js-app/issues"
+  },
+  "homepage": "https://github.com/Tony-Thomas/hapi-js-app#readme",
+  "dependencies": {
+    "handlebars": "^4.0.10",
+    "hapi": "^16.4.3",
+    "inert": "^4.2.0",
+    "vision": "^4.1.1"
+  }
+}
