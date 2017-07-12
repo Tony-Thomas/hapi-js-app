@@ -1,6 +1,15 @@
 const Hapi = require('hapi');
 
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/hapidb',
+{
+        useMongoClient: true
+    })
+    .then(() => console.log('MongoDB connected...'))
+    .catch(err => console.error(err));
+
 // Init Server
+// https://hapijs.com/tutorials
 const server = new Hapi.Server();
 
 // Add connection
@@ -15,9 +24,30 @@ server.route({
     path: '/',
     handler: (request, reply) => {
         // reply('<h1>Hello World</h1>');
-        reply.view('index',{
+        reply.view('index', {
             name: 'John Doe'
         })
+    }
+});
+
+// Tasks Route
+server.route({
+    method: 'GET',
+    path: '/tasks',
+    handler: (request, reply) => {
+        // reply('<h1>Hello World</h1>');
+        reply.view('tasks', {
+            tasks: [{
+                    text: 'task one'
+                },
+                {
+                    text: 'task two'
+                },
+                {
+                    text: 'task three'
+                }
+            ]
+        });
     }
 });
 
@@ -31,9 +61,11 @@ server.route({
 
 });
 
+
+
 // Static Routes
 server.register(require('inert'), (err) => {
-    if(err){
+    if (err) {
         throw err;
     }
 
@@ -55,8 +87,9 @@ server.register(require('inert'), (err) => {
 });
 
 // Vision Templates
+// https://github.com/hapijs/vision
 server.register(require('vision'), (err) => {
-    if(err){
+    if (err) {
         throw err;
     }
     server.views({
@@ -69,7 +102,7 @@ server.register(require('vision'), (err) => {
 
 // Start Server
 server.start((err) => {
-    if(err){
+    if (err) {
         throw err;
     }
     console.log(`Server started at: ${server.info.uri}`);
