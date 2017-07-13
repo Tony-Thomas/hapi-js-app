@@ -8,6 +8,9 @@ mongoose.connect('mongodb://localhost/hapidb',
     .then(() => console.log('MongoDB connected...'))
     .catch(err => console.error(err));
 
+// Create Task Model
+const Task = mongoose.model('Task', {text:String});
+
 // Init Server
 // https://hapijs.com/tutorials
 const server = new Hapi.Server();
@@ -30,23 +33,42 @@ server.route({
     }
 });
 
-// Tasks Route
+// GET Tasks Route
 server.route({
     method: 'GET',
     path: '/tasks',
     handler: (request, reply) => {
-        // reply('<h1>Hello World</h1>');
-        reply.view('tasks', {
-            tasks: [{
-                    text: 'task one'
-                },
-                {
-                    text: 'task two'
-                },
-                {
-                    text: 'task three'
-                }
-            ]
+        let tasks = Task.find((err, tasks) => {
+            //console.log(tasks);
+            reply.view('tasks', {
+                tasks: tasks
+            });
+        });
+        // reply.view('tasks', {
+        //     // tasks: [{
+        //     //         text: 'task one'
+        //     //     },
+        //     //     {
+        //     //         text: 'task two'
+        //     //     },
+        //     //     {
+        //     //         text: 'task three'
+        //     //     }
+        //     // ]
+        //});
+    }
+});
+
+// POST Tasks Route
+server.route({
+    method: 'POST',
+    path: '/tasks',
+    handler: (request, reply) => {
+        let text = request.payload.text;
+        let newTask = new Task({text:text});
+        newTask.save((err, task) => {
+            if(err) return console.log(err);
+            return reply.redirect().location('tasks');
         });
     }
 });
@@ -60,8 +82,6 @@ server.route({
     }
 
 });
-
-
 
 // Static Routes
 server.register(require('inert'), (err) => {

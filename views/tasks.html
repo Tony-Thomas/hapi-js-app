@@ -1,4 +1,8 @@
 <h1>Tasks 1</h1>
+<form method="POST" action="/tasks">
+    <input type="text" name="text" placeholder="add task">
+</form>
+
 <ul>
     {{#each tasks}}
         <li>{{text}}</li>
